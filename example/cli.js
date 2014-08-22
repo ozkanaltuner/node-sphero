@@ -1,17 +1,59 @@
 var roundRobot = require('../');
-
-var sphero = new roundRobot.Sphero();
-
 var keypress = require('keypress');
+var sphero = new roundRobot.Sphero();
+var port = process.argv[2];
 
 // make `process.stdin` begin emitting "keypress" events
 keypress(process.stdin);
 
-sphero.connect();
+sphero.connect(port);
+
+var quit = function(){
+  sphero.close();
+  process.stdin.pause();
+  process.exit();
+};
+
+var color = function(){
+  var r = Math.random()*255;
+  var g = Math.random()*255;
+  var b = Math.random()*255;
+  return [r,g,b];
+};
+
+var keyCommands = {
+  c: function(){
+      var rgb = color();
+      sphero.setRGBLED(rgb[0], rgb[1], rgb[2], false);
+  },
+  b: function(){
+    sphero.setBackLED(1);
+  },
+  n: function(){
+    sphero.setBackLED(0);
+  },
+  right: function(){
+    sphero.setHeading(45);
+  },
+  left: function(){
+    sphero.setHeading(315);
+  },
+  up: function(){
+    sphero.roll(0, 0.5);
+  },
+  down: function(){
+    sphero.roll(0, 0);
+  },
+  x: function(){
+    sphero.setHeading(45).setHeading(315).setBackLED(1);
+  },
+  q: quit
+};
+
 sphero.on("connected", function(ball){
   console.log("Connected!");
   console.log("  c - change color");
-  console.log("  b/n - backled on/off");
+  console.log("  b/n - back led on/off");
   console.log("  up - move forward");
   console.log("  back - stop");
   console.log("  left - change heading 45 deg left");
@@ -25,33 +67,17 @@ sphero.on("connected", function(ball){
   process.stdin.on('keypress', function (ch, key) {
     if(!key) { return; }
 
-    if (key.name === 'q' || (key.ctrl && key.name === 'c')) {
-      sphero.close();
-      process.stdin.pause();
-      process.exit();
+    if (key.ctrl && key.name === 'c') {
+      return quit();
     }
 
-    if(key.name === 'c'){
-      var rgb = color();
-      sphero.setRGBLED(rgb[0], rgb[1], rgb[2], false);
+    if(keyCommands[key.name]){
+      return keyCommands[key.name]();
     }
-    if(key.name === 'b') sphero.setBackLED(1);
-    if(key.name === 'n') sphero.setBackLED(0);
-    if(key.name === 'right') sphero.setHeading(45);
-    if(key.name === 'left') sphero.setHeading(315);
-    if(key.name === 'up') sphero.roll(0, 0.5);
-    if(key.name === 'down') sphero.roll(0, 0);
-    if(key.name === 'x') sphero.setHeading(45).setHeading(315).setBackLED(1);
   });
+
   process.stdin.setRawMode(true);
   process.stdin.resume();
 
 });
-
-var color = function(){
-  var r = Math.random()*255;
-  var g = Math.random()*255;
-  var b = Math.random()*255;
-  return [r,g,b];
-};
 

@@ -1,11 +1,14 @@
 {
   "name": "node-sphero",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Control the Sphero robotic ball from Node!",
-  "author": "Mick Thompson <mick@mick.im>",
+  "authors": [
+    "Mick Thompson <mick@mick.im>",
+    "Francis Gulotta <wizard@roborooter.com>"
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/dthompson/node-sphero.git"
+    "url": "git://github.com/mick/node-sphero.git"
   },
   "engines": {
     "node": ">= 0.8.0"

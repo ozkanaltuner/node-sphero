@@ -29,9 +29,9 @@ The sphero will connect as a standard rf serial port. This has been tested under
 
 Scan for devices and connect to the sphero without a pin - you should then get a notification stating you're connected to probably /dev/rfcomm0
 
-Now you can run the test example above or the cli example passing in the argument /dev/rfcomm0 eg:
+You can now pass in the argument port your sphero is connceted on:
 
-```
+```bash
 node example/cli.js /dev/rfcomm0
 ```
 
