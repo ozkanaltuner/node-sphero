@@ -15,7 +15,7 @@
   },
   "main": "lib/sphero.js",
   "dependencies": {
-    "serialport": "1.4.x"
+    "serialport": "~2.0.5"
   },
   "devDependencies": {
     "keypress": "~0.2.1"
